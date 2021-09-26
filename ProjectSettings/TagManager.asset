@@ -17,6 +17,7 @@ TagManager:
   - SnapSaucer
   - Head
   - IncludeTeleport
+  - Bullet
   layers:
   - Default
   - TransparentFX
