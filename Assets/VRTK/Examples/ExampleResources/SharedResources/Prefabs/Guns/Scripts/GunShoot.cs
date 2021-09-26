@@ -1,4 +1,6 @@
-﻿namespace VRTK.Examples
+﻿using System;
+
+namespace VRTK.Examples
 {
     using UnityEngine;
 
@@ -46,6 +48,13 @@
                     destroyTime = projectileLife;
                 }
                 Destroy(clonedProjectile, destroyTime);
+            }
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.O)){
+                FireProjectile();
             }
         }
     }
