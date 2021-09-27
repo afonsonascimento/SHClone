@@ -74,7 +74,8 @@ public class EnemyController : MonoBehaviour
         //_enemyWeaponRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
         _enemyWeaponRigidbody.AddForce((_playerTransform.position - transform.position) *2, ForceMode.Impulse);
         _enemyWeaponRigidbody.AddForce(Vector3.up * 2, ForceMode.Impulse);
-
+        
+        GameManager.Instance.ScoreController.EnemyKilledPoints();
     }
 
     /// <summary>
