@@ -65,7 +65,7 @@ public class EnemyController : MonoBehaviour
 
         _enemyWeapon.transform.parent = null;
         _enemyWeaponRigidbody.isKinematic = false;
-        _enemyWeaponRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+        //_enemyWeaponRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
         _enemyWeaponRigidbody.AddForce((_playerTransform.position - transform.position) *2, ForceMode.Impulse);
         _enemyWeaponRigidbody.AddForce(Vector3.up * 2, ForceMode.Impulse);
 
