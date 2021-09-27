@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    [SerializeField, Tooltip("Enemy data")]
+    private EnemySO _enemyData;
+    
     [SerializeField, Tooltip("Is the enemy dead")]
     private bool _isDead;
 
@@ -29,10 +32,8 @@ public class EnemyController : MonoBehaviour
     private Rigidbody _enemyWeaponRigidbody;
     private CapsuleCollider _enemyCollider;
 
-    private int shootingRange = 10;
-    
-    private bool _isShooting = false;
-    private int _shootingTimer = 3;
+    private int _shootingRange;
+    private int _runningSpeed;
     
     // Start is called before the first frame update
     void Start()
@@ -40,7 +41,12 @@ public class EnemyController : MonoBehaviour
         _playerTransform = GameManager.Instance.Player.transform;
         _enemyAnimator = GetComponent<Animator>();
         _enemyWeaponRigidbody = _enemyWeapon.GetComponent<Rigidbody>();
+        _enemyWeaponRigidbody.isKinematic = true;
         _enemyCollider = GetComponent<CapsuleCollider>();
+        
+        //Get data from Enemy SO
+        _shootingRange = _enemyData.ShootingRange;
+        _runningSpeed = _enemyData.RunningSpeed;
     }
 
     // Update is called once per frame
@@ -82,9 +88,9 @@ public class EnemyController : MonoBehaviour
             case false:
                 transform.LookAt(new Vector3(_playerTransform.position.x, 0, _playerTransform.position.z));
 
-                if (Vector3.Distance(_playerTransform.position, transform.position) >= shootingRange){
+                if (Vector3.Distance(_playerTransform.position, transform.position) >= _shootingRange){
                     _enemyAnimator.SetTrigger("Running");
-                    transform.position += transform.forward * (1f * Time.deltaTime);
+                    transform.position += transform.forward * (_runningSpeed * Time.deltaTime);
                 } else{
                     _enemyAnimator.SetTrigger("Shooting");
                 }

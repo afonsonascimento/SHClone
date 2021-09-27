@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(nameof(WaitForGameLoad));
+        //StartCoroutine(nameof(WaitForGameLoad));
     }
 
     private IEnumerator WaitForGameLoad()
@@ -77,6 +77,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = Mathf.Lerp(Time.timeScale, _timeScaleTarget, Time.deltaTime * 30);
     }
 
+    /// <summary>
+    /// Calculates slow motion based on head and hands speed
+    /// </summary>
     private void CalculateSlowMotion()
     {
         var headPosition = _playerHead.transform.position;
