@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 
 namespace VRTK.Examples
 {
@@ -11,6 +12,7 @@ namespace VRTK.Examples
         public Transform projectileSpawnPoint;
         public float projectileSpeed = 1000f;
         public float projectileLife = 5f;
+        public Rigidbody gunRigidbody;
 
         protected virtual void OnEnable()
         {
@@ -19,6 +21,8 @@ namespace VRTK.Examples
             if (linkedObject != null)
             {
                 linkedObject.InteractableObjectUsed += InteractableObjectUsed;
+                linkedObject.InteractableObjectGrabbed += GunGrabbed;
+                linkedObject.InteractableObjectUngrabbed += GunNotGrabbed;
             }
         }
 
@@ -27,6 +31,9 @@ namespace VRTK.Examples
             if (linkedObject != null)
             {
                 linkedObject.InteractableObjectUsed -= InteractableObjectUsed;
+                linkedObject.InteractableObjectGrabbed -= GunGrabbed;
+                linkedObject.InteractableObjectUngrabbed -= GunNotGrabbed;
+
             }
         }
 
@@ -51,11 +58,15 @@ namespace VRTK.Examples
             }
         }
 
-        private void Update()
+        private void GunGrabbed(object sender, InteractableObjectEventArgs e)
         {
-            if (Input.GetKeyDown(KeyCode.O)){
-                FireProjectile();
-            }
+            gunRigidbody.interpolation = RigidbodyInterpolation.None;
         }
+
+        private void GunNotGrabbed(object sender, InteractableObjectEventArgs e)
+        {
+            gunRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+        }
+
     }
 }
