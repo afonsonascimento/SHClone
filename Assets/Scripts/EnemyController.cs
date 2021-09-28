@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using VRTK.Examples;
 
 public class EnemyController : MonoBehaviour
 {
@@ -30,6 +32,7 @@ public class EnemyController : MonoBehaviour
     private Transform _playerTransform;
     private Animator _enemyAnimator;
     private Rigidbody _enemyWeaponRigidbody;
+    private GunShoot _enemyWeaponScript;
     private CapsuleCollider _enemyCollider;
 
     private int _shootingRange;
@@ -41,7 +44,9 @@ public class EnemyController : MonoBehaviour
         _playerTransform = GameManager.Instance.Player.transform;
         _enemyAnimator = GetComponent<Animator>();
         _enemyWeaponRigidbody = _enemyWeapon.GetComponent<Rigidbody>();
+        _enemyWeaponScript = _enemyWeapon.GetComponent<GunShoot>();
         _enemyWeaponRigidbody.isKinematic = true;
+        _enemyWeaponRigidbody.interpolation = RigidbodyInterpolation.None;
         _enemyCollider = GetComponent<CapsuleCollider>();
         
         //Get data from Enemy SO
@@ -76,6 +81,7 @@ public class EnemyController : MonoBehaviour
         _enemyWeaponRigidbody.AddForce(Vector3.up * 2, ForceMode.Impulse);
         
         GameManager.Instance.ScoreController.EnemyKilledPoints();
+        StartCoroutine(nameof(DestroyEnemy));
     }
 
     /// <summary>
@@ -110,6 +116,7 @@ public class EnemyController : MonoBehaviour
     {
         if (_bullet != null && _bulletSpawnPoint != null)
         {
+            _enemyWeaponScript.PlayShotSFX();
             GameObject clonedProjectile = Instantiate(_bullet, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
             Rigidbody projectileRigidbody = clonedProjectile.GetComponent<Rigidbody>();
             float destroyTime = 0f;
@@ -128,5 +135,11 @@ public class EnemyController : MonoBehaviour
         if (other.CompareTag("Bullet")){
             EnemyHit();
         }
+    }
+
+    private IEnumerator DestroyEnemy()
+    {
+        yield return new WaitForSeconds(5);
+        Destroy(gameObject);
     }
 }
